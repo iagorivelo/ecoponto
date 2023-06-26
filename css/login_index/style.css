@@ -1,0 +1,162 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto Slab', serif;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+header {
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  max-width: 36rem;
+}
+
+.container h2 {
+  color: #16771A;
+  font-weight: bold;
+  font-size: 2.4rem;
+  text-align: center;
+}
+
+.p-container {
+  font-weight: 400;
+  line-height: 2.11rem;
+  font-size: 1.6rem;
+  text-align: center;
+  color: #000000;
+}
+
+.container .faca-login {
+  font-weight: 400;
+  line-height: 2rem;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #9A9A9A;
+  margin-bottom: 3rem;
+}
+
+.form-btn:nth-child(1) {
+  margin-bottom: 2.2rem;
+}
+
+.form-btn:nth-child(2) {
+  margin-bottom: 5.5rem;
+}
+
+.form-btn {
+  background-color: #16771A;
+  border-radius: 2.1rem;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 2.1rem;
+  color: #FFF;
+  padding: 1.4rem 0;
+}
+
+.form-btn:hover {
+  background-color: #16901A;
+  color: #FFF;
+}
+
+.type-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  list-style: none;
+  font-size: 1.7rem;
+  line-height: 2.242rem;
+}
+
+.type-list li {
+  padding: 1rem;
+}
+
+.type-list li a {
+  text-decoration: none;
+  color: #212529;
+}
+
+svg {
+  color: #16771A;
+}
+
+.form-btn__login {
+  border-radius: 2.1rem;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 2.1rem;
+  padding: 1.4rem;
+}
+
+.form-btn__login:nth-child(1) {
+  margin-top: 17.6rem;
+  margin-bottom: 2.2rem;
+}
+
+.form-btn__login:nth-child(2) {
+  margin-bottom: 5.3rem;
+}
+
+.forget-password {
+  font-size: 1.4rem !important;
+  line-height: 16px !important;
+  color: rgba(139, 139, 139, 1) !important;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+}
+
+.p-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 5rem 0 5rem 1.5rem;
+}
+
+.perfil div:nth-child(1) {
+  background-color: rgba(0, 0, 0, .5);
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  color: white;
+  text-align: center;
+  line-height: 5rem;
+  font-weight: 900;
+  font-size: 2rem;
+}
+
+.perfil div:nth-child(2) {
+  font-size: 2.5rem;
+}
+
+.logout, .logout input{
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-right: 1rem;
+  padding: .5rem;
+  font-size: 2rem;
+  color: rgba(0, 0, 0, .7);
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.list-login li {
+  display: flex;
+  align-items: center;
+}
