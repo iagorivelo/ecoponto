@@ -1,4 +1,8 @@
+<?php
+
 namespace Auth\Controller;
+
+use Auth\ModelAuthModel;
 
 class AuthController
 {
