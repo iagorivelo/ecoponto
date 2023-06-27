@@ -1,3 +1,5 @@
+<?php
+
 namespace Ecoponto\Controller;
 
 class EcopontoController
