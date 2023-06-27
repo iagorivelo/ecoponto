@@ -8,6 +8,13 @@ $parse_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 switch($parse_url)
 {
     case '/':
+        AuthController::index();
+    
+    break;
+
+    case 'logout':
+        AuthController::logout();
+    
     break;
 
     default:
