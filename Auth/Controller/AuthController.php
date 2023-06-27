@@ -9,4 +9,8 @@ class AuthController
     public static function index()
     {
     }
+
+    public static function logout()
+    {
+    }
 }
