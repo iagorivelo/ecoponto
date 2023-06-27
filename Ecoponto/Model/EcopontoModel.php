@@ -1,3 +1,5 @@
+<?php
+
 namespace Ecoponto\Model;
 
 class EcopontoModel
