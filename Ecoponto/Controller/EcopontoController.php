@@ -2,7 +2,7 @@
 
 namespace Ecoponto\Controller;
 
-use Auth\Ecoponto\Model\EcopontoModel.php;
+use Auth\Ecoponto\Model\EcopontoModel;
 
 class EcopontoController
 {
