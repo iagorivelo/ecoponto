@@ -1,4 +1,8 @@
+<?php
+
 namespace Auth\Model;
+
+use \PDO;
 
 class AuthModel
 {
