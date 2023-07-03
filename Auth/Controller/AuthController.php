@@ -10,6 +10,10 @@ class AuthController
     {
     }
 
+    public static function login()
+    {
+    }
+
     public static function logout()
     {
     }
