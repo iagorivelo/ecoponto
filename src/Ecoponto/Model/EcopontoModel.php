@@ -1,6 +1,6 @@
 <?php
 
-namespace Ecoponto\Model;
+namespace src\Ecoponto\Model;
 
 use \PDO;
 

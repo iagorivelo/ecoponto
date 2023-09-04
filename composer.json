@@ -1,0 +1,15 @@
+{
+    "name": "iago/ecoponto",
+    "autoload": {
+        "psr-4": {
+            "src\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Iago Rivelo",
+            "email": "iago.rivelo@gmail.com"
+        }
+    ],
+    "require": {}
+}

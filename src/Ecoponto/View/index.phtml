@@ -1,12 +1,3 @@
-<?php
-session_start();
-
-if(!isset($_SESSION['id_usuario']) || empty($_SESSION['id_usuario']))
-{
-    header('Location: login.php?noLogin=true');
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +10,7 @@ if(!isset($_SESSION['id_usuario']) || empty($_SESSION['id_usuario']))
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/login_index/style.css">
-    <title>EcoPonto - Login</title>
+    <title>EcoPonto - Home</title>
 </head>
 
 <body>
@@ -72,7 +63,7 @@ if(!isset($_SESSION['id_usuario']) || empty($_SESSION['id_usuario']))
             </div>
         </div>
         <div class="logout">
-            <form action="./index.php" method="POST">
+            <form action="logout" method="POST">
                 <input type="hidden" name="logout" value="true">
                 <input type="submit" value="Logout">
             </form>
