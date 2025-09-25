@@ -2,7 +2,8 @@
     "name": "iago/ecoponto",
     "autoload": {
         "psr-4": {
-            "src\\": "src/"
+            "App\\": "app/",
+            "Src\\": "src/"
         }
     },
     "authors": [
@@ -11,5 +12,7 @@
             "email": "iago.rivelo@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
 }
