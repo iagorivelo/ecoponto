@@ -7,8 +7,8 @@ namespace Src\Domain\ValueObjects;
  */
 class Result
 {
-    public const SUCCESS = 'success';
-    public const ERROR   = 'error';
+    private const SUCCESS = 'success';
+    private const ERROR   = 'error';
 
     private string $status;
     private ?string $message;

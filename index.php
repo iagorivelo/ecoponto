@@ -33,7 +33,7 @@ switch($parse_url)
 	    break;
 
     case '/cadastro':
-        $authController->cadastro();
+        $authController->cadastro($_POST);
     
         break;
 

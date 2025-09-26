@@ -5,6 +5,7 @@ namespace Src\Infrastructure\Repository;
 use Src\Domain\Repositories\UserRepositoryInterface;
 use Src\Domain\Entities\User;
 use \PDO;
+use Src\Domain\ValueObjects\Result;
 
 class PDOUserRepository implements UserRepositoryInterface
 {
@@ -26,27 +27,31 @@ class PDOUserRepository implements UserRepositoryInterface
         return User::fromArray($row);
     }
 
-    public function save(User $user): User
+    /**
+     * @return Result<User>
+     */
+    public function save(User $user): Result
     {
-        // Simple upsert: if id exists, update; else insert
-        if ($user->getId()) {
-            $stmt = $this->pdo->prepare('UPDATE users SET email = :email, password = :password, name = :name WHERE id = :id');
-            $stmt->execute([
-                'email' => $user->getEmail(),
-                'password' => $user->getPassword(),
-                'name' => $user->getName(),
-                'id' => $user->getId()
-            ]);
-            return $user;
-        } else {
-            $stmt = $this->pdo->prepare('INSERT INTO users (email, password, name) VALUES (:email, :password, :name)');
-            $stmt->execute([
-                'email' => $user->getEmail(),
-                'password' => $user->getPassword(),
-                'name' => $user->getName()
-            ]);
-            $id = (int)$this->pdo->lastInsertId();
-            return new User($user->getEmail(), $user->getPassword(), $user->getName(), $id);
-        }
+        $stmt = $this->pdo->prepare('INSERT INTO users (name, cpf, email, telefone, password, created_at, updated_at) 
+                                    VALUES (:name, :cpf, :email, :telefone, :password, :created, :updated)');
+        $stmt->execute([
+            'name' => $user->getName(),
+            'cpf' => $user->getCpf(),
+            'email' => $user->getEmail(),
+            'telefone' => $user->getTelefone(),
+            'password' => $user->getPassword(),
+            'created' => Date('Y-m-d H:i:s'),
+            'updated' => Date('Y-m-d H:i:s')
+        ]);
+        $id = (int) $this->pdo->lastInsertId();
+
+        return Result::success('Usuário Cadastrado com Sucesso!', new User(
+            $user->getEmail(),
+            $user->getPassword(),
+            $user->getName(),
+            $user->getCpf(),
+            $user->getTelefone(),
+            $id
+        ));
     }
 }

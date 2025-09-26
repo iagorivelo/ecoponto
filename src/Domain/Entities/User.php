@@ -7,7 +7,9 @@ class User
     public function __construct(
         private readonly string $email,
         private string $password,
-        private ?string $name = null,
+        private string $name,
+        private string $cpf,
+        private string $telefone,
         private ?int $id = null
     ) {}
 
@@ -26,9 +28,19 @@ class User
         return $this->password;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getCpf(): string
+    {
+        return $this->cpf;
+    }
+
+    public function getTelefone(): string
+    {
+        return $this->telefone;
     }
 
     public static function fromArray(array $data): self
@@ -36,7 +48,9 @@ class User
         return new self(
             $data['email'] ?? '',
             $data['password'] ?? '',
-            $data['name'] ?? null,
+            $data['name'] ?? '',
+            $data['cpf'] ?? '',
+            $data['telefone'] ?? '',
             isset($data['id']) ? (int)$data['id'] : null
         );
     }
