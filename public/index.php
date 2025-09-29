@@ -1,13 +1,13 @@
 <?php
 
-require_once "vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 use Dotenv\Dotenv;
 use App\Auth\Controller\AuthController;
 use App\config\Database;
 use App\Ecoponto\Controller\EcopontoController;
 
-$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 $pdo = Database::connect();
