@@ -6,7 +6,9 @@ use \PDO;
 use Src\Application\UseCases\CadastraEndereco;
 use Src\Application\UseCases\CadastraUsuario;
 use Src\Application\UseCases\VerificaUsuario;
+use Src\Domain\Entities\User;
 use Src\Domain\Repositories\UserRepositoryInterface;
+use Src\Domain\ValueObjects\Email;
 use Src\Infrastructure\Repository\PDOUserRepository;
 
 class AuthController
@@ -42,7 +44,13 @@ class AuthController
             return include_once __DIR__ . '/../View/login.phtml';
         }
 
-        $result = $this->verificaUsuarioUseCase->execute($post['email'], $post['senha']);
+        $email = Email::criar($post['email']);
+
+        if ($email->isError()) {
+            throw new \Exception($email->message);
+        }
+
+        $result = $this->verificaUsuarioUseCase->execute($email->data, $post['senha']);
 
         if ($result->isError()) {
             throw new \Exception($result->message);
@@ -71,19 +79,27 @@ class AuthController
             return include_once __DIR__ . '/../View/cadastro.phtml';
         }
 
-        $result = $this->verificaUsuarioUseCase->execute($post['email'], $post['senha']);
+        $email = Email::criar($post['email']);
+
+        if ($email->isError()) {
+            throw new \Exception($email->message);
+        }
+
+        $result = $this->verificaUsuarioUseCase->execute($email->data, $post['senha']);
 
         if ($result->isSuccess()) {
             return include_once __DIR__ . '/../View/cadastro.phtml';
         }
 
-        $resultCadastroUsuario = $this->cadastraUsuarioUseCase->execute(
+        $user = new User(
+            $email->data,
+            password_hash($post['senha'], PASSWORD_DEFAULT),
             $post['nome_completo'],
-            $post['telefone'],
             $post['cpf'],
-            $post['email'],
-            $post['senha']
+            $post['telefone']
         );
+
+        $resultCadastroUsuario = $this->cadastraUsuarioUseCase->execute($user);
 
         session_start();
         $_SESSION['name'] = $resultCadastroUsuario->data->getName();

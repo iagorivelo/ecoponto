@@ -5,6 +5,7 @@ namespace Src\Infrastructure\Repository;
 use Src\Domain\Repositories\UserRepositoryInterface;
 use Src\Domain\Entities\User;
 use \PDO;
+use Src\Domain\ValueObjects\Email;
 use Src\Domain\ValueObjects\Result;
 
 class PDOUserRepository implements UserRepositoryInterface
@@ -15,16 +16,23 @@ class PDOUserRepository implements UserRepositoryInterface
         $this->pdo = $pdo;
     }
 
-    public function findByEmail(string $email): ?User
+    public function findByEmail(Email $email): ?User
     {
-        $stmt = $this->pdo->prepare('SELECT id, email, password, name FROM users WHERE email = :email LIMIT 1');
-        $stmt->execute(['email' => $email]);
+        $stmt = $this->pdo->prepare('SELECT id, email, cpf, password, telefone, name FROM users WHERE email = :email LIMIT 1');
+        $stmt->execute(['email' => $email->email]);
 
         $row = $stmt->fetch();
 
         if (!$row) return null;
 
-        return User::fromArray($row);
+        return new User(
+            $email,
+            $row['password'],
+            $row['name'],
+            $row['cpf'],
+            $row['telefone'],
+            $row['id']
+        );
     }
 
     /**
@@ -37,7 +45,7 @@ class PDOUserRepository implements UserRepositoryInterface
         $stmt->execute([
             'name' => $user->getName(),
             'cpf' => $user->getCpf(),
-            'email' => $user->getEmail(),
+            'email' => $user->getEmail()->email,
             'telefone' => $user->getTelefone(),
             'password' => $user->getPassword(),
             'created' => Date('Y-m-d H:i:s'),

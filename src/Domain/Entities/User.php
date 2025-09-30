@@ -2,10 +2,12 @@
 
 namespace Src\Domain\Entities;
 
+use Src\Domain\ValueObjects\Email;
+
 class User
 {
     public function __construct(
-        private readonly string $email,
+        private readonly Email $email,
         private string $password,
         private string $name,
         private string $cpf,
@@ -18,7 +20,7 @@ class User
         return $this->id;
     }
 
-    public function getEmail(): string
+    public function getEmail(): Email
     {
         return $this->email;
     }
@@ -41,18 +43,6 @@ class User
     public function getTelefone(): string
     {
         return $this->telefone;
-    }
-
-    public static function fromArray(array $data): self
-    {
-        return new self(
-            $data['email'] ?? '',
-            $data['password'] ?? '',
-            $data['name'] ?? '',
-            $data['cpf'] ?? '',
-            $data['telefone'] ?? '',
-            isset($data['id']) ? (int)$data['id'] : null
-        );
     }
 
     public function toArray(): array

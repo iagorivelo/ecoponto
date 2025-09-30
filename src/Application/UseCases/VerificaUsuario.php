@@ -2,6 +2,7 @@
 namespace Src\Application\UseCases;
 
 use Src\Domain\Repositories\UserRepositoryInterface;
+use Src\Domain\ValueObjects\Email;
 use Src\Domain\ValueObjects\Result;
 
 class VerificaUsuario
@@ -13,7 +14,7 @@ class VerificaUsuario
         $this->repository = $repository;
     }
 
-    public function execute(string $email, string $password): Result
+    public function execute(Email $email, string $password): Result
     {
         $user = $this->repository->findByEmail($email);
         if (!$user) {
