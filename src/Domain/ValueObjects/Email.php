@@ -13,6 +13,6 @@ final class Email
             return Result::error('Email não é válido!');
         }
 
-        return Result::sucess('Email válido!', $email);
+        return Result::success('Email válido!', $email);
     }
 }

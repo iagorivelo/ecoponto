@@ -3,7 +3,6 @@
 namespace App\Auth\Controller;
 
 use \PDO;
-use App\Auth\Model\AuthModel;
 use Src\Application\UseCases\CadastraEndereco;
 use Src\Application\UseCases\CadastraUsuario;
 use Src\Application\UseCases\VerificaUsuario;
@@ -46,11 +45,11 @@ class AuthController
         $result = $this->verificaUsuarioUseCase->execute($post['email'], $post['senha']);
 
         if ($result->isError()) {
-            throw new \Exception($result->getMessage());
+            throw new \Exception($result->message);
         }
 
         session_start();
-        $_SESSION['name'] = $result->getData()->getName();
+        $_SESSION['name'] = $result->data->getName();
 
         header("Location: /dashboard");
     }
@@ -87,7 +86,7 @@ class AuthController
         );
 
         session_start();
-        $_SESSION['name'] = $resultCadastroUsuario->getData()->getName();
+        $_SESSION['name'] = $resultCadastroUsuario->data->getName();
 
         header("Location: /dashboard");
     }

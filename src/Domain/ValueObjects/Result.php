@@ -15,20 +15,20 @@ final readonly class Result
     private function __construct(
         protected ResultStatus $status,
         public ?string $message = null,
-        $data = null
+        public mixed $data = null
     ) {}
 
-    public static function sucess(?string $message = null, $data = null): self
+    public static function success(?string $message = null, mixed $data = null): self
     {
         return new self(ResultStatus::SUCCESS, $message, $data);
     }
 
-    public static function error(?string $message = null, $data = null): self
+    public static function error(?string $message = null, mixed $data = null): self
     {
         return new self(ResultStatus::ERROR, $message, $data);
     }
 
-    public function isSucess(): bool
+    public function isSuccess(): bool
     {
         return $this->status === ResultStatus::SUCCESS;
     }

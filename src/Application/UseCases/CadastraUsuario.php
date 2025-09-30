@@ -28,6 +28,6 @@ class CadastraUsuario
 
         $user = $this->repository->save($objectUser);
 
-        return Result::success($user->getMessage(), $user->getData());
+        return Result::success($user->message, $user->data);
     }
 }
