@@ -1,80 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Src\Domain\ValueObjects;
 
-/**
- * @template T
- */
-class Result
+enum ResultStatus: string
 {
-    private const SUCCESS = 'success';
-    private const ERROR   = 'error';
+    case SUCCESS = 'success';
+    case ERROR = 'error';
+}
 
-    private string $status;
-    private ?string $message;
-    
-    /**
-     * @var T|null
-     */
-    private mixed $data;
+final readonly class Result
+{
+    private function __construct(
+        protected ResultStatus $status,
+        public ?string $message = null,
+        $data = null
+    ) {}
 
-    /**
-     * @param T|null $data
-     */
-    public function __construct(
-        string $status,
-        ?string $message = null,
-        mixed $data = null,
-    ) {
-        if (!in_array($status, [self::SUCCESS, self::ERROR], true)) {
-            throw new \InvalidArgumentException('Status inválido');
-        }
-
-        $this->status  = $status;
-        $this->message = $message;
-        $this->data    = $data;
+    public static function sucess(?string $message = null, $data = null): self
+    {
+        return new self(ResultStatus::SUCCESS, $message, $data);
     }
 
-    /**
-     * @template U
-     * @param U|null $data
-     * @return Result<U>
-     */
-    public static function success(?string $message = null, mixed $data = null): self
+    public static function error(?string $message = null, $data = null): self
     {
-        return new self(self::SUCCESS, $message, $data);
+        return new self(ResultStatus::ERROR, $message, $data);
     }
 
-    /**
-     * @template U
-     * @param U|null $data
-     * @return Result<U>
-     */
-    public static function error(?string $message = null, mixed $data = null): self
+    public function isSucess(): bool
     {
-        return new self(self::ERROR, $message, $data);
-    }
-
-    public function isSuccess(): bool
-    {
-        return $this->status === self::SUCCESS;
+        return $this->status === ResultStatus::SUCCESS;
     }
 
     public function isError(): bool
     {
-        return $this->status === self::ERROR;
-    }
-
-    public function getMessage(): ?string
-    {
-        return $this->message;
-    }
-
-    /**
-     * @return T|null
-     */
-    public function getData(): mixed
-    {
-        return $this->data;
+        return $this->status === ResultStatus::ERROR;
     }
 }
