@@ -2,6 +2,7 @@
 
 namespace Src\Domain\Entities;
 
+use Src\Domain\ValueObjects\CPF;
 use Src\Domain\ValueObjects\Email;
 
 class User
@@ -10,7 +11,7 @@ class User
         private readonly Email $email,
         private string $password,
         private string $name,
-        private string $cpf,
+        private CPF $cpf,
         private string $telefone,
         private ?int $id = null
     ) {}
@@ -35,7 +36,7 @@ class User
         return $this->name;
     }
 
-    public function getCpf(): string
+    public function getCpf(): CPF
     {
         return $this->cpf;
     }

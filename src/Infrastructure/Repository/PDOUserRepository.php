@@ -44,7 +44,7 @@ class PDOUserRepository implements UserRepositoryInterface
                                     VALUES (:name, :cpf, :email, :telefone, :password, :created, :updated)');
         $stmt->execute([
             'name' => $user->getName(),
-            'cpf' => $user->getCpf(),
+            'cpf' => $user->getCpf()->cpf,
             'email' => $user->getEmail()->email,
             'telefone' => $user->getTelefone(),
             'password' => $user->getPassword(),

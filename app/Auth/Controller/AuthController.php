@@ -8,6 +8,7 @@ use Src\Application\UseCases\CadastraUsuario;
 use Src\Application\UseCases\VerificaUsuario;
 use Src\Domain\Entities\User;
 use Src\Domain\Repositories\UserRepositoryInterface;
+use Src\Domain\ValueObjects\CPF;
 use Src\Domain\ValueObjects\Email;
 use Src\Infrastructure\Repository\PDOUserRepository;
 
@@ -80,9 +81,14 @@ class AuthController
         }
 
         $email = Email::criar($post['email']);
+        $cpf = CPF::criar($post['cpf']);
 
         if ($email->isError()) {
             throw new \Exception($email->message);
+        }
+
+        if ($cpf->isError()) {
+            throw new \Exception($cpf->message);
         }
 
         $result = $this->verificaUsuarioUseCase->execute($email->data, $post['senha']);
@@ -95,7 +101,7 @@ class AuthController
             $email->data,
             password_hash($post['senha'], PASSWORD_DEFAULT),
             $post['nome_completo'],
-            $post['cpf'],
+            $cpf->data,
             $post['telefone']
         );
 
