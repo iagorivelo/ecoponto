@@ -26,7 +26,7 @@ class AuthController
     {
         $this->repository = new PDOUserRepository($pdo);
         $this->verificaUsuarioUseCase = new VerificaUsuario($this->repository);
-        $this->verificaSenhaUseCase = new VerificaSenha($this->repository);
+        $this->verificaSenhaUseCase = new VerificaSenha();
         $this->cadastraUsuarioUseCase = new CadastraUsuario($this->repository);
         $this->cadastraEnderecoUseCase = new CadastraEndereco($this->repository);
     }
