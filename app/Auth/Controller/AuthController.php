@@ -3,10 +3,7 @@
 namespace App\Auth\Controller;
 
 use \PDO;
-use Src\Application\UseCases\CadastraEndereco;
-use Src\Application\UseCases\CadastraUsuario;
-use Src\Application\UseCases\VerificaSenha;
-use Src\Application\UseCases\VerificaUsuario;
+use Src\Application\UseCases\UseCases;
 use Src\Domain\Entities\User;
 use Src\Domain\Repositories\UserRepositoryInterface;
 use Src\Domain\ValueObjects\CPF;
@@ -17,18 +14,12 @@ use Src\Infrastructure\Repository\PDOUserRepository;
 class AuthController
 {
     private UserRepositoryInterface $repository;
-    private VerificaUsuario $verificaUsuarioUseCase;
-    private VerificaSenha $verificaSenhaUseCase;
-    private CadastraUsuario $cadastraUsuarioUseCase;
-    private CadastraEndereco $cadastraEnderecoUseCase;
+    private UseCases $useCases;
 
     public function __construct(PDO $pdo)
     {
         $this->repository = new PDOUserRepository($pdo);
-        $this->verificaUsuarioUseCase = new VerificaUsuario($this->repository);
-        $this->verificaSenhaUseCase = new VerificaSenha();
-        $this->cadastraUsuarioUseCase = new CadastraUsuario($this->repository);
-        $this->cadastraEnderecoUseCase = new CadastraEndereco($this->repository);
+        $this->useCases = new UseCases($this->repository);
     }
 
     public function index()
@@ -60,13 +51,13 @@ class AuthController
             throw new \Exception($password->message);
         }
 
-        $result = $this->verificaUsuarioUseCase->execute($email->data);
+        $result = $this->useCases->verificaUsuarioUseCase()->execute($email->data);
         if ($result->isError()) {
             throw new \Exception($result->message);
         }
 
         $user = $result->data;
-        $resultSenha = $this->verificaSenhaUseCase->execute($user, $password->data);
+        $resultSenha = $this->useCases->verificaSenhaUseCase()->execute($user, $password->data);
 
         if ($resultSenha->isError()) {
             throw new \Exception($resultSenha->message);
@@ -111,7 +102,7 @@ class AuthController
             throw new \Exception($password->message);
         }
 
-        $result = $this->verificaUsuarioUseCase->execute($email->data);
+        $result = $this->useCases->cadastraUsuarioUseCase()->execute($email->data);
 
         if ($result->isSuccess()) {
             return include_once __DIR__ . '/../View/cadastro.phtml';
@@ -125,7 +116,7 @@ class AuthController
             $post['telefone']
         );
 
-        $resultCadastroUsuario = $this->cadastraUsuarioUseCase->execute($user);
+        $resultCadastroUsuario = $this->useCases->cadastraUsuarioUseCase()->execute($user);
 
         session_start();
         $_SESSION['name'] = $resultCadastroUsuario->data->getName();

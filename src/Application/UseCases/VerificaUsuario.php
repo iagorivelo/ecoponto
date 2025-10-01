@@ -3,7 +3,6 @@ namespace Src\Application\UseCases;
 
 use Src\Domain\Repositories\UserRepositoryInterface;
 use Src\Domain\ValueObjects\Email;
-use Src\Domain\ValueObjects\Password;
 use Src\Domain\ValueObjects\Result;
 
 class VerificaUsuario
