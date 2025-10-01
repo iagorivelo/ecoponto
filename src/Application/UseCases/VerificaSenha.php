@@ -1,12 +1,12 @@
 <?php
 namespace Src\Application\UseCases;
 
+use Src\Domain\Entities\User;
 use Src\Domain\Repositories\UserRepositoryInterface;
-use Src\Domain\ValueObjects\Email;
 use Src\Domain\ValueObjects\Password;
 use Src\Domain\ValueObjects\Result;
 
-class VerificaUsuario
+class VerificaSenha
 {
     private UserRepositoryInterface $repository;
 
@@ -15,11 +15,10 @@ class VerificaUsuario
         $this->repository = $repository;
     }
 
-    public function execute(Email $email): Result
+    public function execute(User $user, Password $password): Result
     {
-        $user = $this->repository->findByEmail($email);
-        if (!$user) {
-            return Result::error('Usuário não Cadastrado!');
+        if (!$password->verificar($password->password, $user->getPassword()->password)) {
+            return Result::error('Senha incorreta!');
         }
 
         return Result::success('', $user);

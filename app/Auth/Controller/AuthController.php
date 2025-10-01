@@ -5,17 +5,20 @@ namespace App\Auth\Controller;
 use \PDO;
 use Src\Application\UseCases\CadastraEndereco;
 use Src\Application\UseCases\CadastraUsuario;
+use Src\Application\UseCases\VerificaSenha;
 use Src\Application\UseCases\VerificaUsuario;
 use Src\Domain\Entities\User;
 use Src\Domain\Repositories\UserRepositoryInterface;
 use Src\Domain\ValueObjects\CPF;
 use Src\Domain\ValueObjects\Email;
+use Src\Domain\ValueObjects\Password;
 use Src\Infrastructure\Repository\PDOUserRepository;
 
 class AuthController
 {
     private UserRepositoryInterface $repository;
     private VerificaUsuario $verificaUsuarioUseCase;
+    private VerificaSenha $verificaSenhaUseCase;
     private CadastraUsuario $cadastraUsuarioUseCase;
     private CadastraEndereco $cadastraEnderecoUseCase;
 
@@ -23,6 +26,7 @@ class AuthController
     {
         $this->repository = new PDOUserRepository($pdo);
         $this->verificaUsuarioUseCase = new VerificaUsuario($this->repository);
+        $this->verificaSenhaUseCase = new VerificaSenha($this->repository);
         $this->cadastraUsuarioUseCase = new CadastraUsuario($this->repository);
         $this->cadastraEnderecoUseCase = new CadastraEndereco($this->repository);
     }
@@ -46,15 +50,26 @@ class AuthController
         }
 
         $email = Email::criar($post['email']);
+        $password = Password::criar($post['senha']);
 
         if ($email->isError()) {
             throw new \Exception($email->message);
         }
 
-        $result = $this->verificaUsuarioUseCase->execute($email->data, $post['senha']);
+        if ($password->isError()) {
+            throw new \Exception($password->message);
+        }
 
+        $result = $this->verificaUsuarioUseCase->execute($email->data);
         if ($result->isError()) {
             throw new \Exception($result->message);
+        }
+
+        $user = $result->data;
+        $resultSenha = $this->verificaSenhaUseCase->execute($user, $password->data);
+
+        if ($resultSenha->isError()) {
+            throw new \Exception($resultSenha->message);
         }
 
         session_start();
@@ -82,6 +97,7 @@ class AuthController
 
         $email = Email::criar($post['email']);
         $cpf = CPF::criar($post['cpf']);
+        $password = Password::criar($post['senha']);
 
         if ($email->isError()) {
             throw new \Exception($email->message);
@@ -91,7 +107,11 @@ class AuthController
             throw new \Exception($cpf->message);
         }
 
-        $result = $this->verificaUsuarioUseCase->execute($email->data, $post['senha']);
+        if ($password->isError()) {
+            throw new \Exception($password->message);
+        }
+
+        $result = $this->verificaUsuarioUseCase->execute($email->data);
 
         if ($result->isSuccess()) {
             return include_once __DIR__ . '/../View/cadastro.phtml';
@@ -99,7 +119,7 @@ class AuthController
 
         $user = new User(
             $email->data,
-            password_hash($post['senha'], PASSWORD_DEFAULT),
+            $password->data,
             $post['nome_completo'],
             $cpf->data,
             $post['telefone']

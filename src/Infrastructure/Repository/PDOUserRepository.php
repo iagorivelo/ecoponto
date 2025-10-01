@@ -5,7 +5,9 @@ namespace Src\Infrastructure\Repository;
 use Src\Domain\Repositories\UserRepositoryInterface;
 use Src\Domain\Entities\User;
 use \PDO;
+use Src\Domain\ValueObjects\CPF;
 use Src\Domain\ValueObjects\Email;
+use Src\Domain\ValueObjects\Password;
 use Src\Domain\ValueObjects\Result;
 
 class PDOUserRepository implements UserRepositoryInterface
@@ -25,11 +27,14 @@ class PDOUserRepository implements UserRepositoryInterface
 
         if (!$row) return null;
 
+        $cpf = CPF::criar($row['cpf']);
+        $password = Password::criar($row['password']);
+
         return new User(
             $email,
-            $row['password'],
+            $password->data,
             $row['name'],
-            $row['cpf'],
+            $cpf->data,
             $row['telefone'],
             $row['id']
         );
@@ -47,7 +52,7 @@ class PDOUserRepository implements UserRepositoryInterface
             'cpf' => $user->getCpf()->cpf,
             'email' => $user->getEmail()->email,
             'telefone' => $user->getTelefone(),
-            'password' => $user->getPassword(),
+            'password' => $user->getPassword()->encriptar(),
             'created' => Date('Y-m-d H:i:s'),
             'updated' => Date('Y-m-d H:i:s')
         ]);

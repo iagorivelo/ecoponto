@@ -4,17 +4,19 @@ namespace Src\Domain\Entities;
 
 use Src\Domain\ValueObjects\CPF;
 use Src\Domain\ValueObjects\Email;
+use Src\Domain\ValueObjects\Password;
 
 class User
 {
     public function __construct(
         private readonly Email $email,
-        private string $password,
+        private Password $password,
         private string $name,
         private CPF $cpf,
         private string $telefone,
         private ?int $id = null
-    ) {}
+    ) {
+    }
 
     public function getId(): ?int
     {
@@ -26,7 +28,7 @@ class User
         return $this->email;
     }
 
-    public function getPassword(): string
+    public function getPassword(): Password
     {
         return $this->password;
     }
